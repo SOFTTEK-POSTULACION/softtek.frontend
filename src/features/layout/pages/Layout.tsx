@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 //CSS
 import '../scss/layout.scss';
