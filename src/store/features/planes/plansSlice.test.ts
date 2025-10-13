@@ -14,7 +14,7 @@ describe('Pruebas en plansSlice', () => {
 
     test('debe regresar el estado inicial', () => {
         const state = plansReducer(undefined, { type: 'unknown' });
-        expect(state.sSelectedOption).toBe('paraMi');
+        expect(state.sSelectedOption).toBe(null);
         expect(state.oSelectedPlan).toBe(null);
     });
 

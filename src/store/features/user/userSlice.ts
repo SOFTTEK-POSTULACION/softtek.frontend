@@ -30,3 +30,5 @@ export const userSlice = createSlice({
 });
 
 export const { startLoadingUser, setUser, setUserError, setQuoteData } = userSlice.actions;
+
+export default userSlice.reducer;

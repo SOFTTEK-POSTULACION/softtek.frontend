@@ -23,15 +23,16 @@ export const ResumenPage = () => {
     const { oQuoteData, oUser, bLoading: bUserLoading } = useSelector((state: RootState) => state.user);
     const sUserName = oUser ? `${oUser.sName} ${oUser.sLastName}` : "Cliente";
     const isLoading = !oSelectedPlan || !oQuoteData || bUserLoading;
-    
+
     useEffect(() => {
         const timer = setTimeout(() => {
-            if (!isLoading && (!oSelectedPlan || !oQuoteData)) {
+            if (!oSelectedPlan || !oQuoteData) {
                 navigate('/planes');
             }
         }, 500);
+
         return () => clearTimeout(timer);
-    }, [isLoading, oSelectedPlan, oQuoteData, navigate]);
+    }, [oSelectedPlan, oQuoteData, navigate]);
 
     return (
         <>
