@@ -6,35 +6,22 @@ import '../../../scss/planes.scss';
 
 // FONT AWESOME
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleCheck, faCircle as faCircleSolid, faCircleChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faCircleChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { faCircle as faCircleRegular } from '@fortawesome/free-regular-svg-icons';
 
 // IMÁGENES
 import iconForMe from '../../../img/iconforme.svg';
 import iconForAnyOne from '../../../img/iconforanyone.svg';
+import iconHouse from '../../../img/iconHouse.svg';
 
 // LIBRERÍAS
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import { FreeMode, Pagination } from 'swiper/modules';
-// 1. Definimos la forma de los datos que esperamos recibir
-interface Plan {
-    name: string;
-    price: number;
-    description: string[];
-}
+import type { IPlanesViewProps } from './interfaces/IPlanesViewProps.interface';
+import { PlanSkeleton } from './PlanSkeleton';
 
-// 2. Definimos todas las props que el componente necesita del contenedor
-interface PlanesViewProps {
-    userName: string;
-    plans: Plan[];
-    selectedOption: string | null;
-    onGoBack: () => void;
-    onSelectOption: (option: string) => void;
-    onSelectPlan: (plan: Plan) => void;
-}
 
-// 3. El componente es ahora puramente visual
 export const PlanesView = ({
     userName,
     plans,
@@ -42,52 +29,41 @@ export const PlanesView = ({
     onGoBack,
     onSelectOption,
     onSelectPlan,
-}: PlanesViewProps) => {
+    isLoading,
+    error,
+}: IPlanesViewProps) => {
 
-    
+    const calculatePrice = (price: number) => {
+        if (selectedOption === 'paraAlguienMas') {
+            return price * 0.95; // Aplica el 5% de descuento
+        }
+        return price;
+    };
+
     return (
         <>
-            {/* Sección del Stepper de Pasos */}
-            <section className="sectPasosCotizacion">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-12">
-                            <ul className="listPasosCotizacion">
-                                <li className="item active"> <span>1</span> Planes y Coberturas</li>
-                                <li className="separator">
-                                    <FontAwesomeIcon icon={ faCircleSolid } />
-                                    <FontAwesomeIcon icon={ faCircleSolid } />
-                                    <FontAwesomeIcon icon={ faCircleSolid } />
-                                    <FontAwesomeIcon icon={ faCircleSolid } />
-                                </li>
-                                <li className="item"> <span>2</span> Resumen</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             {/* Sección Principal de Planes */}
             <section className="sectPlanes">
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-lg-10">
+
                             <Box
-                                 sx={{
+                                sx={{
                                     textAlign: 'center'
-                                    ,padding: '2rem 0'
-                                    ,margin: 'auto'
-                                    ,'@media (max-width: 991px)': {
-                                        padding: '0',  // Elimina el padding a partir de 991px
+                                    , padding: '2rem 0'
+                                    , margin: 'auto'
+                                    , '@media (max-width: 991px)': {
+                                        padding: '0',
                                     }
-                                }}    
+                                }}
                             >
                                 <Button
-                                    // onClick={() => navigate(-1)}
+                                    onClick={() => onGoBack()}
                                     sx={{ color: '#4a4fff', fontSize: '1rem', mb: 2 }}
                                     className="btnBack"
                                 >
-                                    <FontAwesomeIcon icon={ faCircleChevronLeft } /> Volver
+                                    <FontAwesomeIcon icon={faCircleChevronLeft} /> Volver
                                 </Button>
 
                                 <Typography variant="h4" component="h1" className="titleCotizacion">
@@ -100,7 +76,7 @@ export const PlanesView = ({
                                 {/* Opciones de Cotización */}
                                 <Box sx={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'center', gap: '1.5rem' }}>
                                     <Card
-                                        // onClick={() => handleOptionSelect('paraMi')}
+                                        onClick={() => onSelectOption('paraMi')}
                                         sx={{
                                             width: 350,
                                             cursor: 'pointer',
@@ -113,48 +89,47 @@ export const PlanesView = ({
                                             },
                                             transition: 'transform 0.3s, box-shadow 0.3s',
                                             '@media (max-width: 767px)': {
-                                                width: '100% !important', // Cambia el ancho al 100% en pantallas pequeñas
+                                                width: '100% !important',
                                             },
                                         }}
                                         className="boxCardCotizacionOption"
                                     >
                                         <CardContent className="boxContentCardCotizacionOption">
-                                            { 
+                                            {
                                                 (selectedOption === 'paraMi') ?
-                                                    <FontAwesomeIcon icon={ faCircleCheck } className="iconCheck" />
-                                                    : <FontAwesomeIcon icon={ faCircleRegular } className="iconNotCheck" />
+                                                    <FontAwesomeIcon icon={faCircleCheck} className="iconCheck" />
+                                                    : <FontAwesomeIcon icon={faCircleRegular} className="iconNotCheck" />
                                             }
-                                            <img src={ iconForMe } alt="" />
+                                            <img src={iconForMe} alt="" />
                                             <Typography variant="h6">Para mí</Typography>
                                             <Typography variant="body2" color="text.secondary">Cotiza tu seguro de salud y agrega familiares si así lo deseas. </Typography>
                                         </CardContent>
                                     </Card>
 
                                     <Card
-                                        // onClick={() => handleOptionSelect('paraAlguienMas')}
+                                        onClick={() => onSelectOption('paraAlguienMas')}
                                         sx={{
                                             width: 350,
                                             cursor: 'pointer',
-                                            // border: selectedOption === 'paraAlguienMas' ? '3px solid #000000' : '3px solid #ddd',
                                             boxShadow: selectedOption === 'paraAlguienMas' ? '0px 4px 10px rgba(74, 79, 255, 0.2)' : '0px 1px 32px 0px #AEACF359',
                                             borderRadius: '20px',
                                             padding: '25px',
                                             '&:hover': {
-                                            transform: 'scale(1.05)',
+                                                transform: 'scale(1.05)',
                                             },
                                             transition: 'transform 0.3s, box-shadow 0.3s',
                                             '@media (max-width: 767px)': {
-                                                width: '100% !important', // Cambia el ancho al 100% en pantallas pequeñas
+                                                width: '100% !important',
                                             },
                                         }}
                                     >
                                         <CardContent className="boxContentCardCotizacionOption">
-                                            { 
-                                                (selectedOption === 'paraAlguienMas') 
-                                                    ? <FontAwesomeIcon icon={ faCircleCheck } className="iconCheck" />
-                                                    : <FontAwesomeIcon icon={ faCircleRegular } className="iconNotCheck"  />
+                                            {
+                                                (selectedOption === 'paraAlguienMas')
+                                                    ? <FontAwesomeIcon icon={faCircleCheck} className="iconCheck" />
+                                                    : <FontAwesomeIcon icon={faCircleRegular} className="iconNotCheck" />
                                             }
-                                            <img src={ iconForAnyOne } alt="" />
+                                            <img src={iconForAnyOne} alt="" />
                                             <Typography variant="h6">Para alguien más</Typography>
                                             <Typography variant="body2" color="text.secondary"> una cotización para uno de tus familiares o cualquier persona. </Typography>
 
@@ -164,7 +139,21 @@ export const PlanesView = ({
 
                                 {/* Carrusel de Planes */}
                                 <Box sx={{ mt: '0' }}>
-                                    {selectedOption && plans.length > 0 ? (
+
+                                    {isLoading ? (
+                                        <div className="row">
+                                            {[...Array(3)].map((_, index) => (
+                                                <div className="col-lg-4" key={index} style={{ padding: '20px 16px', paddingBottom: '40px' }}>
+                                                    <PlanSkeleton />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : error ? (
+                                        <Typography variant="body1" sx={{ color: 'red', mt: 4 }}>
+                                            Error al cargar los planes: {error}
+                                        </Typography>
+                                    ) : selectedOption && plans.length > 0 ? (
+                                            
                                         <Swiper
                                             slidesPerView={3}
                                             spaceBetween={0}
@@ -173,9 +162,9 @@ export const PlanesView = ({
                                             modules={[FreeMode, Pagination]}
                                             className="mySwiper planes-swiper-container"
                                             breakpoints={{
-                                                991   : {  slidesPerView: 3, spaceBetween: 0 }
-                                                ,767  : {  slidesPerView: 2, spaceBetween: 0 }
-                                                ,0    : {  slidesPerView: 1, spaceBetween: 0 }
+                                                991: { slidesPerView: 3, spaceBetween: 0 }
+                                                ,767: { slidesPerView: 2, spaceBetween: 0 }
+                                                , 0: { slidesPerView: 1, spaceBetween: 0 }
                                             }}
                                         >
                                             {plans.map((plan, index) => (
@@ -185,19 +174,20 @@ export const PlanesView = ({
                                                         className="boxPlan"
                                                     >
                                                         <div className="boxHead">
-                                                            <h3>{plan.name}</h3>
+                                                            <img src={iconHouse} alt="Rimac Seguros - planes" />
+                                                            <h3>{plan.sName}</h3>
                                                             <h5>COSTO DEL PLAN</h5>
-                                                            <h4>${plan.price.toFixed(2)}</h4>
+                                                            <h4>${calculatePrice(plan.nPrice).toFixed(2)}</h4>
                                                         </div>
                                                         <div className="boxBody">
                                                             <hr />
                                                             <ul>
-                                                                {plan.description.map((desc, idx) => <li key={idx}>{desc}</li>)}
+                                                                {plan.aDescription.map((desc, idx) => <li key={idx}>{desc}</li>)}
                                                             </ul>
                                                         </div>
                                                         <div className="boxFoot">
                                                             <Button
-                                                                variant="contained" 
+                                                                variant="contained"
                                                                 disableElevation
                                                                 className="btnCotizar"
                                                                 style={{
@@ -211,7 +201,7 @@ export const PlanesView = ({
                                                                     width: "100%",
                                                                     letterSpacing: "1.5px"
                                                                 }}
-                                                                // onClick={() => onClickPlanSelected(plan)}
+                                                                onClick={() => onSelectPlan(plan)}
                                                             >
                                                                 Seleccionar Plan
                                                             </Button>
@@ -220,17 +210,19 @@ export const PlanesView = ({
                                                 </SwiperSlide>
                                             ))}
                                         </Swiper>
+                                        
                                     ) : (
                                         <Typography variant="body1" sx={{ color: '#888', mt: 4 }}>
                                             {selectedOption ? 'No hay planes disponibles.' : 'Selecciona una opción para ver los planes.'}
                                         </Typography>
                                     )}
-                                </Box>
+
                             </Box>
-                        </div>
+                        </Box>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section >
         </>
     );
 };

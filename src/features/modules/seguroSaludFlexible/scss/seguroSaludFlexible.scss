@@ -1,0 +1,162 @@
+.sectSeguroSaludFlexible {
+    position: relative;
+    overflow: hidden;
+    padding-top: 32px;
+    padding-bottom: 112px;
+
+    flex-grow: 1;
+
+    .blurOne,
+    .blurTwo {
+        position: absolute;
+        top: 0;
+        width: 500px;
+        height: 100%;
+        z-index: -1;
+    }
+
+    .blurOne {
+        right: 0;
+    }
+
+    .blurTwo {
+        left: 0;
+    }
+}
+
+.boxSeguroSaludFlexible {
+    padding-left: 128px;
+    width: 100%;
+    max-width: 620px;
+
+    .boxHead {
+        span {
+            padding: 0 5px;
+            display: inline-block;
+            height: 24px;
+            border-radius: 5px;
+            background: linear-gradient(86.01deg, #00F4E2 0%, #00FF7F 100%);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+        }
+
+        .boxImgFamily {
+            display: none;
+        }
+
+        h3 {
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 40px;
+            text-align: left;
+        }
+
+        p {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 20px;
+            letter-spacing: 0.2px;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+    }
+
+    .inputDNI {
+        display: flex;
+
+        .FormControl {
+            width: 100px;
+        }
+    }
+
+    .inputCheckbox {
+        margin-top: 24px;
+        label {
+            margin-bottom: 12px;
+            margin-left: 0;
+            span {
+                font-size: 12px;
+                padding: 0;
+            }
+        }
+
+    }
+
+    .inputCelular {
+        height: 56px;
+    }
+
+    .linkTermino {
+        color: #000000 !important;
+        text-decoration-color: #000000 !important;
+        font-weight: 600 !important;
+        font-size: 12px;
+    }
+}
+
+// Media Queries anidadas para mayor claridad
+@media (max-width: 1199px) {
+    .boxSeguroSaludFlexible {
+        padding: 0 50px;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 991px) {
+    .sectSeguroSaludFlexible {
+
+        .blurOne,
+        .blurTwo,
+        .imgFamilyDesktop {
+            display: none;
+        }
+    }
+
+    .boxSeguroSaludFlexible {
+        padding: 0;
+        max-width: 100%;
+
+        .boxHead {
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
+            margin-bottom: 30px;
+
+            .boxTitle {
+                width: calc(100% - 180px);
+                padding-right: 15px;
+            }
+
+            .boxImgFamily {
+                display: block;
+                width: 180px;
+            }
+
+            .boxDescription {
+                margin-top: 25px;
+                padding-top: 25px;
+                border-top: 1px solid #CCD1EE;
+
+                p {
+                    margin-bottom: 0;
+                }
+            }
+
+            h3 {
+                font-size: 45px;
+                margin-top: 15px;
+            }
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .boxSeguroSaludFlexible .boxHead h3 {
+        font-size: 32px;
+    }
+
+    .hideBr {
+        display: none;
+    }
+}

@@ -1,0 +1,92 @@
+.sectResumen {
+    background: #fafbff;
+
+    * {
+        font-family: "Lato", sans-serif !important;
+    }
+}
+
+.boxResumen {
+    
+
+
+    .boxHead>h2 {
+        font-size: 40px;
+        font-weight: 700;
+        line-height: 48px;
+        letter-spacing: -0.6px;
+        text-align: left;
+        margin-bottom: 40px;
+    }
+
+    .boxBody {
+        background: #ffffff;
+        box-shadow: 0px 1px 24px 0px #AEACF340;
+        border-radius: 24px;
+        padding-top: 24px;
+        padding-right: 32px;
+        padding-bottom: 24px;
+        padding-left: 32px;
+
+        >p {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            text-align: left;
+        }
+
+        >hr {
+            border-top: 1px solid #a5ade1;
+        }
+
+        >h3 {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 28px;
+            letter-spacing: -0.2px;
+            text-align: left;
+
+            .iconHead {
+                width: 24px;
+            }
+        }
+
+        >.listDetail {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 0;
+
+            >li {
+                margin-bottom: 20px;
+
+                h5 {
+                    font-weight: 400;
+                    font-size: 16px;
+                }
+
+                p {
+                    margin-bottom: 5px;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}
+
+// Media Queries
+@media(max-width: 767px) {
+    .sectResumen {
+        padding: 50px 0;
+    }
+
+    .boxResumen {
+        .boxHead>h2 {
+            font-size: 30px;
+        }
+
+        .boxBody {
+            margin-bottom: 0;
+            padding: 15px;
+        }
+    }
+}

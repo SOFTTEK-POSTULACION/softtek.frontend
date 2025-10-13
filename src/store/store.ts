@@ -1,11 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { userSlice } from './admin/user';
-// import { authSlice } from './admin/auth';
+import { configureStore } from '@reduxjs/toolkit';
+import { planesSlice } from './features/planes/planesSlice';
+import { userSlice } from './features/user';
 
 export const store = configureStore({
     reducer: {
-        // auth: authSlice.reducer,
-        user: userSlice.reducer,
+        planes: planesSlice.reducer,
+        user: userSlice.reducer
     },
 });
 

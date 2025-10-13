@@ -1,6 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
 .sectPasosCotizacion {
     background-color: #EDEFFC !important;
     padding: 10px 0;
+
+    * {
+        font-family: "Lato", sans-serif !important;
+    }
 }
 
 /*****************************/
@@ -81,6 +87,10 @@
 /*****************************/
 .sectPlanes {
     background: #FAFBFF;
+
+    * {
+        font-family: "Lato", sans-serif !important;
+    }
 }
 
 /*****************************/
@@ -123,14 +133,14 @@
 
 .boxPlan .boxHead {
     position: relative;
-    padding-right: 80px;
+    padding-right: 50px;
 }
 
 .boxPlan .boxHead img {
     position: absolute;
     top: 0;
     right: 0;
-    width: 75px;
+    width: 52.5px;
     z-index: 1;
 }
 
@@ -139,7 +149,7 @@
     font-weight: 700;
     line-height: 32px;
     text-align: left;
-    margin-bottom: 35px;
+    margin-bottom: 24px;
 }
 
 .boxPlan .boxHead h5 {
@@ -151,10 +161,10 @@
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
     color: #7981B2;
+    margin-bottom: 4px;
 }
 
 .boxPlan .boxHead h4 {
-    // font-family: Lato;
     font-size: 20px;
     font-weight: 900;
     line-height: 28px;
@@ -163,6 +173,7 @@
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
     color: #141938;
+    margin-bottom: 0;
 }
 
 /***/
@@ -209,26 +220,20 @@
     }
 }
 
-/* Mover los dots de paginación más abajo */
+
 .swiper-pagination {
     position: absolute !important;
-    /* Asegura que la paginación esté posicionada de forma absoluta */
     bottom: 0px !important;
-    /* Ajusta esta distancia para mover los dots más abajo */
     left: 50%;
-    /* Centra los dots horizontalmente */
     transform: translateX(-50%);
-    /* Ajusta la posición para centrar completamente */
     z-index: 10;
-    /* Para asegurarte de que los dots estén sobre otros elementos */
 }
 
 .planes-swiper-container {
 
-    // Aseguramos que el contenedor principal del swiper sea un flex container
     .swiper-wrapper {
         display: flex;
-        align-items: stretch; // ¡Esta es la propiedad clave!
+        align-items: stretch; // propiedad clave
     }
 
     .swiper-slide {
@@ -240,7 +245,11 @@
     .boxPlan {
         display: flex;
         flex-direction: column;
-        height: 100%; // <-- ¡Clave! La tarjeta ocupa el 100% de la altura del slide
-        justify-content: space-between; // Esto empuja el botón hacia abajo
+        height: 100%;
+        justify-content: space-between;
+
+        .boxBody {
+            flex-grow: 1;
+        }
     }
 }

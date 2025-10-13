@@ -1,72 +1,92 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import type { AppDispatch } from '../../../../../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from '../../../../../store/store';
 
 import { PlanesView } from './components/PlanesView';
+import { getPlans, setSelectedPlan, setSelectedPlanOption } from '../../../../../store/features/planes';
+import type { IPlan } from '../../../../../store/features/planes/interfaces/IPlanesSlices.interface';
+import { PasosCotizacion } from '../../components/PasosCotizacion';
+import { getUser } from '../../../../../store/features/user/thunks';
+import { calculateAge } from '../../components/calculateAge';
 
-interface Plan {
-    name: string;
-    price: number;
-    description: string[];
-}
 
 export const PlanesPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
 
-    // --- CONEXIÓN CON REDUX ---
-    // Descomenta estas líneas cuando crees tus slices para obtener datos reales del store
-    // const { data: userData } = useSelector((state: RootState) => state.user);
-    // const { list: plansData, selectedOption: planOption } = useSelector((state: RootState) => state.plans);
-    
-    // --- DATOS DE EJEMPLO (mientras no conectas Redux) ---
-    const userName = "Bruno"; // Esto vendrá de: userData?.name || ''
-    const plans: Plan[] = [
-        { name: 'Plan Básico', price: 20, description: ['Cobertura esencial', 'Acceso a red médica'] },
-        { name: 'Plan Avanzado', price: 40, description: ['Todo en básico', 'Chequeos anuales'] },
-        { name: 'Plan Premium', price: 60, description: ['Todo en avanzado', 'Cobertura internacional'] },
-        { name: 'Plan Premium2', price: 60, description: ['Todo en avanzado', 'Cobertura internacional'] },
-    ];
-    const selectedOption = 'paraMi'; // Esto vendrá de: planOption
+    // ONEXIÓN CON REDUX ---
+    const { aList: plansData, sSelectedOption, bLoading, sError } = useSelector((state: RootState) => state.planes);
 
-    // Efecto para cargar datos iniciales (ej: datos del usuario)
+    const { oQuoteData, oUser } = useSelector((state: RootState) => state.user);
+
+    // EFECTO PARA CARGAR DATOS ---
     useEffect(() => {
-        // Aquí llamarás a la API del usuario la primera vez que la página cargue
-        // dispatch(fetchUser());
-    }, [dispatch]);
+        if (!oQuoteData) {
+            navigate('/');
+        }
+    }, [oQuoteData, navigate]);
 
-    // --- MANEJADORES DE EVENTOS ---
-    const handleGoBack = () => {
-        navigate(-1); // Navega a la página anterior
-    };
+    // EFECTO PARA CARGAR DATOS ---
+    useEffect(() => {
+        if (!oUser) {
+            dispatch(getUser());
+        }
+
+        if (sSelectedOption) {
+            dispatch(getPlans());
+        }
+    }, [sSelectedOption, dispatch]);
+
+
+    const userAge = useMemo(() => {
+        return oUser ? calculateAge(oUser.sBirthDay) : 0;
+    }, [oUser]);
+
+    
+    const filteredPlans = useMemo(() => {
+        if (!userAge || !plansData) return [];
+        return plansData.filter(plan => userAge <= plan.nAge);
+    }, [plansData, userAge]);
+
+    // MANEJADORES DE EVENTOS ---
+    const handleGoBack = () => navigate(-1);
 
     const handleSelectOption = (option: string) => {
-        console.log('Opción seleccionada:', option);
-        // Cuando el usuario elija "Para mí" o "Para alguien más",
-        // despacharías acciones para guardar esa opción y buscar los planes.
-        // dispatch(setSelectedPlanOption(option));
-        // dispatch(fetchPlans(option));
+        dispatch(setSelectedPlanOption(option));
     };
 
-    const handleSelectPlan = (plan: Plan) => {
-        console.log('Plan seleccionado:', plan);
-        // Cuando el usuario elija un plan, lo guardarías en el store
-        // y lo llevarías a la página de resumen.
-        // dispatch(selectPlan(plan));
-        navigate('/resumen');
+    const handleSelectPlan = (plan: IPlan) => {
+        if (oQuoteData) {
+            const planParaGuardar = { ...plan };
+            if (sSelectedOption === 'paraAlguienMas') {
+                planParaGuardar.nPrice = plan.nPrice * 0.95;
+            }
+            dispatch(setSelectedPlan(planParaGuardar));            
+            navigate('/resumen');
+        } else {
+            navigate('/');
+        }
     };
+
+    if (!oQuoteData) {
+        return null;
+    }
 
     return (
-        <PlanesView
-            userName={userName}
-            plans={plans}
-            selectedOption={selectedOption}
-            onGoBack={handleGoBack}
-            onSelectOption={handleSelectOption}
-            onSelectPlan={handleSelectPlan}
-        />
+        <>
+            <PasosCotizacion activeStep={1} />
+            <PlanesView
+                userName={oUser?.sName || "Cliente"}
+                plans={filteredPlans}
+                selectedOption={sSelectedOption}
+                onGoBack={handleGoBack}
+                onSelectOption={handleSelectOption}
+                onSelectPlan={handleSelectPlan}
+                isLoading={bLoading}
+                error={sError}
+            />
+
+        </>
     );
-    
-    
 }

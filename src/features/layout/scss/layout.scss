@@ -1,0 +1,100 @@
+@use '../../../assets/fonts/fonts';
+
+body, * {
+    font-family: 'BR Sonoma', sans-serif !important;
+    font-weight: 500;
+}
+
+/****************************/
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.router-outlet {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/****************************/
+.navBarMain {
+    padding: 11px 0;
+    
+    .listInfoNavBar {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 0;
+        text-align: right;
+
+        > li {
+            display: inline-block;
+            
+            h5 {
+                margin-bottom: 0;
+                line-height: 1;
+                margin-right: 30px;
+                font-weight: 500;
+                font-size: 12px;
+            }
+
+            a {
+                font-size: 18px;
+                font-weight: 700;
+                text-decoration: none;
+                color: #000000;
+            }
+        }
+    }
+}
+
+/*****************************/
+.footerMain {
+    background: #03050F;
+    height: 100px;
+    display: flex;
+    align-items: center;
+
+    .rightAutor {
+        text-align: right;
+        color: #ffffff;
+        margin-bottom: 0;
+    }
+
+    .imgLogoFooterMobile {
+        display: none;
+    }
+}
+
+/********** MEDIA QUERIES ***********/
+@media (max-width: 991px) {
+    .navBarMain .listInfoNavBar > li {
+        h5 { font-size: 15px; }
+        a { font-size: 20px; }
+    }
+    .footerMain {
+        .imgLogoFooterDesktop { display: none; }
+        .imgLogoFooterMobile {
+            display: block;
+            max-width: 250px;
+            margin: 0 auto;
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .navBarMain .listInfoNavBar > li h5 {
+        display: none;
+    }
+    .footerMain {
+        height: auto;
+        padding: 35px 0;
+        .rightAutor {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #2B304E;
+        }
+    }
+}
