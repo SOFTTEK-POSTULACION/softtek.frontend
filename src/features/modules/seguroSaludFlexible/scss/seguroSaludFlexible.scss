@@ -152,9 +152,18 @@
 }
 
 @media (max-width: 767px) {
-    .boxSeguroSaludFlexible .boxHead h3 {
-        font-size: 32px;
+    .boxSeguroSaludFlexible .boxHead  {
+        h3 {
+            font-size: 32px;
+        }
+
+        span {
+            font-size: 12px;
+            height: auto;
+            padding: 3px;
+        }
     }
+    
 
     .hideBr {
         display: none;
